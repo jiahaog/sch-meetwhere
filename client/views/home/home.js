@@ -15,16 +15,19 @@ Template.home.onRendered(function () {
   var request = {
     location: pyrmont,
     radius: '500',
-    types: ['store']
+    types: ['food']
   };
 
   // Create the PlaceService and send the request.
   // Handle the callback with an anonymous function.
+  var infowindow = new google.maps.InfoWindow();
   var service = new google.maps.places.PlacesService(map);
+  
   service.nearbySearch(request, function(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       for (var i = 0; i < results.length; i++) {
         var place = results[i];
+        console.log(place);
         // If the request succeeds, draw the place location on
         // the map as a marker, and register an event to handle a
         // click on the marker.
@@ -32,10 +35,20 @@ Template.home.onRendered(function () {
           map: map,
           position: place.geometry.location
         });
+        bindInfoWindow(marker, map, infowindow, place);
       }
     }
   });
 });
+
+function bindInfoWindow(marker, map, infowindow, place) {
+    marker.addListener('click', function() {
+        infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
+        'Place ID: ' + place.place_id + '<br>' +
+        place.formatted_address + '</div>');
+        infowindow.open(map, this);
+    });
+}
 
 Template.home.events({
 
