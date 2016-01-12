@@ -5,15 +5,25 @@
         <input type="text" name="text" placeholder="Add a new location here" />
       </form>
   	  <div>
-  	  	Hello World!
+  	  <h1>Starting Locations</h1>
   	    {{#each locs}}
   	      {{> loc}}
   	    {{/each}}
   	  </div>
+  	  <button class="calculate">Calculate center</button>
+  	  <h1>{{center}}</h1>
+  	  {{#each featured}}
+  	      {{> feature}}
+      {{/each}}
   	</div>
 
 </template>
 
 <template name="loc">
-	<li>{{text}}</li>
+	<h3>{{result.formatted_address}}</h3>
+	<li>{{result.geometry.location.lat}}, {{result.geometry.location.lng}}</li>
+</template>
+
+<template name="feature">
+	<h3>{{name}}</h3>
 </template>
