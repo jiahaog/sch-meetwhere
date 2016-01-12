@@ -73,5 +73,6 @@ function average(locations) {
     var lat = latsum / number;
     var lng = lngsum / number;
 
-    return [lat, lng];
+    const result = [lat, lng];
+    return result;
 }
