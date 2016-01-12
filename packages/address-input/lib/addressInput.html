@@ -1,5 +1,6 @@
 <Template name="addressInput">
-  {{this}}
+  {{#if this}}
+  <h1>NOT BLANK</h1>
   <form id={{uniqueId}}>
     <div>
       <i class="material-icons prefix">account_circle</i>
@@ -7,4 +8,16 @@
       <label class="active" for="icon_prefix">Enter a place</label>
     </div>
   </form>
+  {{else}}
+
+  <form id={{uniqueId}}>
+    <h1>BLANK</h1>
+    <div>
+      <i class="material-icons prefix">account_circle</i>
+      <input class="js-address-input" id="icon_prefix" type="text" name="address">
+      <label class="active" for="icon_prefix">Enter a place</label>
+    </div>
+  </form>
+  {{/if}}
+
 </Template>

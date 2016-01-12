@@ -10,14 +10,13 @@ Package.onUse(function (api) {
         //https://github.com/meteor/meteor/pull/4851
         'meteor-base',
         'blaze-html-templates',
-        'manuel:reactivearray',
-        'meetwhere:address-input'
+        'react'
     ];
     api.use(packages);
 
     api.addFiles([
         'lib/userWorkflow.html',
-        'lib/userWorkflow.js',
+        'lib/userWorkflow.jsx'
     ], 'client');
 
     api.export([
