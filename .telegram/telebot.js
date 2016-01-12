@@ -11,6 +11,7 @@ const commands = {
 	register: registerAttendance,
 	unregister: unregisterAttendance,
 	suggest: suggestLocation,
+	nolocation: removeLocation,
 }
 
 var chatIds = {};
@@ -120,6 +121,16 @@ function setLocation(args){
 		location: location,
 		first_name: user.first_name,
 	};
+	sendLocationMessage(chatId);
+}
+
+function removeLocation(args){
+	var chatId = args.chatId;
+	var	user = args.from;
+	if (!chatIds[chatId].locations)
+		return;
+	if (user.id in chatIds[chatId].locations)
+		delete chatIds[chatId].locations[user.id];
 	sendLocationMessage(chatId);
 }
 
