@@ -10,7 +10,9 @@ Package.onUse(function (api) {
         //https://github.com/meteor/meteor/pull/4851
         'meteor-base',
         'blaze-html-templates',
-        'react'
+        'react',
+        'dburles:google-maps',
+        'jeremy:geocomplete'
     ];
     api.use(packages);
 

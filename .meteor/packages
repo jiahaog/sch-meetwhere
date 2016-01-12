@@ -24,7 +24,9 @@ msavin:mongol
 less
 iron:router
 materialize:materialize@=0.97.0
+jeremy:geocomplete
 
 # meetwhere custom packages
 meetwhere:click-button
 meetwhere:user-workflow
+

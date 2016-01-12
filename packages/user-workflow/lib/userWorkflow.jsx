@@ -1,4 +1,17 @@
-Template.userWorkflow.onRendered(() => {
+Meteor.startup(function () {
+    GoogleMaps.load({
+        key: 'AIzaSyB0wJuC2ZTaul7QfU3UC9BtG7uAK3MoWzc',
+        libraries: 'places'  // also accepts an array if you need more than one
+    });
+
+});
+
+Template.userWorkflow.onRendered(function () {
+    this.autorun(function () {
+        if (GoogleMaps.loaded()) {
+            //$(".js-address-input").geocomplete();
+        }
+    });
     ReactDOM.render(<UserWorkflow />, document.getElementById("render-target"));
 });
 
@@ -18,6 +31,9 @@ UserWorkflow = React.createClass({
     renderTasks() {
         return this.state.addressBoxes.map((addressBox) => {
             const key = addressBox.id;
+            $(`#${key}`).geocomplete().bind("geocode:result", (event, result) => {
+                this.findIdAndUpdate(key, result.formatted_address);
+            });
             return <form className="input-field" key={key}>
                 <div>
                     <i className="material-icons prefix">account_circle</i>
@@ -29,20 +45,10 @@ UserWorkflow = React.createClass({
         });
     },
 
-
     handleInputChange: function (event) {
         const id = event.target.id;
         const value = event.target.value;
-
-        const currentState = this.state.addressBoxes;
-        currentState.forEach(addressBox => {
-            if (addressBox.id === id) {
-                addressBox.address = value;
-            }
-        });
-        this.setState({
-            addressBoxes: currentState
-        });
+        this.findIdAndUpdate(id, value);
     },
 
     getRandomId: function () {
@@ -57,6 +63,8 @@ UserWorkflow = React.createClass({
         });
         console.log(allAddresses);
         // todo put code here to do computation
+
+
     },
 
     addAddressBox: function () {
@@ -80,5 +88,18 @@ UserWorkflow = React.createClass({
                 <a className="waves-effect waves-light btn" onClick={this.submit}>Meet Where!</a>
             </div>
         );
+    },
+
+    findIdAndUpdate: function (id, newValue) {
+        const currentState = this.state.addressBoxes;
+        currentState.forEach(addressBox => {
+            if (addressBox.id === id) {
+                addressBox.address = newValue;
+            }
+        });
+        this.setState({
+            addressBoxes: currentState
+        });
     }
+
 });

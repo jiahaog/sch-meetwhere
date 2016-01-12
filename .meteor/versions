@@ -14,6 +14,7 @@ callback-hook@1.0.4
 check@1.1.0
 coffeescript@1.0.11
 cosmos:browserify@0.9.3
+dburles:google-maps@1.0.9
 dburles:mongo-collection-instances@0.3.4
 ddp@1.2.2
 ddp-client@1.2.1
@@ -41,6 +42,7 @@ iron:location@1.0.11
 iron:middleware-stack@1.0.11
 iron:router@1.0.12
 iron:url@1.0.11
+jeremy:geocomplete@1.6.5_4
 jquery@1.11.4
 jsx@0.2.3
 lai:collection-extensions@0.1.4
