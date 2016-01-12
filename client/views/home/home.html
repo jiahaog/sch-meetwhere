@@ -1,3 +1,19 @@
 <template name="home">
-  <div id="map"></div>
+    <div id="map"></div>
+  	<div id="loc_list">
+  	  <form class="new-loc">
+        <input type="text" name="text" placeholder="Add a new location here" />
+      </form>
+  	  <div>
+  	  	Hello World!
+  	    {{#each locs}}
+  	      {{> loc}}
+  	    {{/each}}
+  	  </div>
+  	</div>
+
+</template>
+
+<template name="loc">
+	<li>{{text}}</li>
 </template>
