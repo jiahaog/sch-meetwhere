@@ -27,3 +27,4 @@ iron:router
 # meetwhere custom packages
 meetwhere:click-button
 materialize:materialize@=0.97.0
+meteorhacks:picker

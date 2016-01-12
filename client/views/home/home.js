@@ -33,7 +33,7 @@ Template.home.helpers({
 });
 
 Template.home.onRendered(function () {
-  var pyrmont = new google.maps.LatLng(-33.8665, 151.1956);
+  var pyrmont = new google.maps.LatLng(1.3868121, 103.8914433);
 
   var map = new google.maps.Map(document.getElementById('map'), {
     center: pyrmont,
@@ -84,7 +84,6 @@ Template.home.onRendered(function () {
  //    }
  //  });
 });
-
 
 
 Template.home.events({
