@@ -125,5 +125,17 @@ function sendLocationMessage(chatId){
 
 function suggestLocation(args){
 	var chatId = args.chatId;
-	speak("Go to McDonald's la", chatId);	
+	var locations = [];
+	for (var i in chatIds[chatId].registered){
+		if (i in chatIds[chatId].locations)
+			locations.push(chatIds[chatId].locations[i]);
+	}
+	if (locations)
+	    request({url:'http://127.0.0.1:3000/api/meetwhere', qs:locations}, function (error, response, body) {
+			if (!error && response.statusCode == 200) {
+				console.log(response);
+				var response = JSON.parse(response.body); 
+				speak(response, chatId);
+			}
+		});
 }
