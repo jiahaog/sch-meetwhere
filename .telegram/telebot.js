@@ -4,6 +4,7 @@ const reqUrl = "https://api.telegram.org/bot169186697:AAF4ZwiaZvhzYDssV18vlfLRU9
 const methods = {
 	update: "getUpdates",
 	message: "sendMessage",
+	location: "sendLocation",
 };
 
 const commands = {
@@ -35,11 +36,13 @@ function pollForUpdate(){
 						if (results[i].message.text){
 							if (results[i].message.text[0] == "/"){
 								var command = results[i].message.text.substring(1);
-								var args = {
-									chatId: chatId,
-									from: results[i].message.from,
-								};
-								commands[command](args);
+								if (command in commands){
+									var args = {
+										chatId: chatId,
+										from: results[i].message.from,
+									};
+									commands[command](args);
+								}
 							}
 						}
 						else{
@@ -66,6 +69,24 @@ function speak(text, chatId){
 	request(apiUrl("message"), {form:{
 		chat_id: chatId,
 		text: text,
+	}});
+}
+
+function sendLocation(location, chatId, array){
+	var latitude, longitude;
+	if (array){
+		latitude = location[0];
+		longitude = location[1];
+	}
+	else{
+		latitude = location.latitude;
+		longitude = location.longitude;
+	}
+	console.log(latitude, longitude);
+	request(apiUrl("location"), {form:{
+		chat_id: chatId,
+		latitude: latitude,
+		longitude: longitude,
 	}});
 }
 
@@ -118,7 +139,6 @@ function sendLocationMessage(chatId){
 	for (var i in chatIds[chatId].locations){
 		locationMessage += chatIds[chatId].locations[i].first_name + " " + chatIds[chatId].locations[i].location.latitude + "," + chatIds[chatId].locations[i].location.longitude + "\n";
 	}
-
 	locationMessage = locationMessage.substring(0, locationMessage.length - 1);
 	speak(locationMessage, chatId);
 }
@@ -127,15 +147,19 @@ function suggestLocation(args){
 	var chatId = args.chatId;
 	var locations = [];
 	for (var i in chatIds[chatId].registered){
-		if (i in chatIds[chatId].locations)
-			locations.push(chatIds[chatId].locations[i]);
+		if (i in chatIds[chatId].locations){
+			locations.push([chatIds[chatId].locations[i].location.latitude, chatIds[chatId].locations[i].location.longitude].join(","));
+		}
 	}
-	if (locations)
-	    request({url:'http://127.0.0.1:3000/api/meetwhere', qs:locations}, function (error, response, body) {
+	if (locations){
+		console.log(locations);
+		request({url:'http://10.21.112.151:3000/api/meetwhere/location', qs: locations}, function (error, response, body) {
 			if (!error && response.statusCode == 200) {
-				console.log(response);
 				var response = JSON.parse(response.body); 
 				speak(response, chatId);
+				var location = response.center;
+				sendLocation(location, chatId, array=true);
 			}
 		});
+	}
 }
