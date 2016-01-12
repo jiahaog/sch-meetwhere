@@ -39,6 +39,10 @@ Meteor.methods({
             const location = placeDetail.result.geometry.location;
             return [location.lat, location.lng];
         });
+        return Meteor.call('getCenterAndFeaturesFromLatLong', locations);
+    },
+
+    getCenterAndFeaturesFromLatLong: function (locations) {
         const center = average(locations);
         return {
             center: center,
