@@ -41,42 +41,48 @@ Template.home.onRendered(function () {
     scrollwheel: false
   });
 
-  // Specify location, radius and place types for your Places API search.
-  var request = {
-    location: pyrmont,
-    radius: '500',
-    types: ['food']
-  };
+  var autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'),{componentRestrictions:{country:"sg"}});
+  autocomplete.bindTo('bounds', map);
+  // When the user selects an address from the dropdown, populate the address
+  // fields in the form.
+  // autocomplete.addListener('place_changed', fillInAddress);
 
-  // Create the PlaceService and send the request.
-  // Handle the callback with an anonymous function.
-  var infowindow = new google.maps.InfoWindow();
-  var service = new google.maps.places.PlacesService(map);
+ //  // Specify location, radius and place types for your Places API search.
+ //  var request = {
+ //    location: pyrmont,
+ //    radius: '500',
+ //    types: ['food']
+ //  };
+
+ //  // Create the PlaceService and send the request.
+ //  // Handle the callback with an anonymous function.
+ //  var infowindow = new google.maps.InfoWindow();
+ //  var service = new google.maps.places.PlacesService(map);
   
-	function bindInfoWindow(marker, map, infowindow, place) {
-	    marker.addListener('click', function() {
-	        infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
-	        'Place ID: ' + place.place_id + '<br>' +
-	        place.formatted_address + '</div>');
-	        infowindow.open(map, this);
-	    });
-	}
+	// function bindInfoWindow(marker, map, infowindow, place) {
+	//     marker.addListener('click', function() {
+	//         infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
+	//         'Place ID: ' + place.place_id + '<br>' +
+	//         place.formatted_address + '</div>');
+	//         infowindow.open(map, this);
+	//     });
+	// }
 
-  service.nearbySearch(request, function(results, status) {
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
-      for (var i = 0; i < results.length; i++) {
-        var place = results[i];
-        // If the request succeeds, draw the place location on
-        // the map as a marker, and register an event to handle a
-        // click on the marker.
-        var marker = new google.maps.Marker({
-          map: map,
-          position: place.geometry.location
-        });
-        bindInfoWindow(marker, map, infowindow, place);
-      }
-    }
-  });
+ //  service.nearbySearch(request, function(results, status) {
+ //    if (status == google.maps.places.PlacesServiceStatus.OK) {
+ //      for (var i = 0; i < results.length; i++) {
+ //        var place = results[i];
+ //        // If the request succeeds, draw the place location on
+ //        // the map as a marker, and register an event to handle a
+ //        // click on the marker.
+ //        var marker = new google.maps.Marker({
+ //          map: map,
+ //          position: place.geometry.location
+ //        });
+ //        bindInfoWindow(marker, map, infowindow, place);
+ //      }
+ //    }
+ //  });
 });
 
 
