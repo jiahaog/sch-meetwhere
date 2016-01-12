@@ -25,6 +25,7 @@ less
 iron:router
 materialize:materialize@=0.97.0
 jeremy:geocomplete
+meteorhacks:picker
 
 # meetwhere custom packages
 meetwhere:click-button
