@@ -12,6 +12,7 @@ caching-compiler@1.0.0
 caching-html-compiler@1.0.2
 callback-hook@1.0.4
 check@1.1.0
+coffeescript@1.0.11
 dburles:mongo-collection-instances@0.3.4
 ddp@1.2.2
 ddp-client@1.2.1
@@ -45,8 +46,11 @@ launch-screen@1.0.4
 less@2.5.1
 livedata@1.0.15
 logging@1.0.8
+manuel:reactivearray@1.0.5
 materialize:materialize@0.97.0
+meetwhere:address-input@0.0.1
 meetwhere:click-button@0.0.1
+meetwhere:user-workflow@0.0.1
 meteor@1.1.10
 meteor-base@1.0.1
 meteortoys:toykit@2.1.2

@@ -1,0 +1,12 @@
+/*Need to reset css for so that dynamically adding the form value would not change the color*/
+
+.input-field .prefix.active {
+  /*reset color*/
+  color: #000;
+}
+
+/* label underline focus color */
+.input-field input[type=text]:focus {
+  border-bottom: 1px solid #9e9e9e;
+  box-shadow: 0 1px 0 0 #000;
+}

@@ -23,7 +23,8 @@ insecure                # Allow all DB writes from clients (for prototyping)
 msavin:mongol
 less
 iron:router
+materialize:materialize@=0.97.0
 
 # meetwhere custom packages
 meetwhere:click-button
-materialize:materialize@=0.97.0
+meetwhere:user-workflow
