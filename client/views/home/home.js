@@ -1,11 +1,35 @@
 Locs = new Mongo.Collection("locs");
 
+Session.setDefault("locs", []);
+Session.setDefault("center", null);
+Session.setDefault("featured", []);
+
+var example = [[1.3984457, 103.9072046], [1.300555, 103.781179], [1.3507722, 103.8722242]]
+
+function average(locs){
+	var latsum = 0;
+	var lngsum = 0;
+	for (var i = 0; i < locs.length; i++){
+		// latsum+=locs[i].geometry.location.lat;
+		// console.log(locs[i][0]);
+		latsum = latsum + locs[i].result.geometry.location.lat;
+		lngsum = lngsum + locs[i].result.geometry.location.lng;
+	}
+	var lat = latsum/locs.length;
+	var lng = lngsum/locs.length;
+	return [lat, lng]
+}
+
 Template.home.helpers({
 	locs: function() {
-		return Locs.find({});
-	},
-
-
+		return Session.get("locs");
+	}, 
+	center: function(){
+		return Session.get("center");
+	}, 
+	featured: function(){
+		return Session.get("featured");
+	}
 });
 
 Template.home.onRendered(function () {
@@ -42,7 +66,6 @@ Template.home.onRendered(function () {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       for (var i = 0; i < results.length; i++) {
         var place = results[i];
-        console.log(place);
         // If the request succeeds, draw the place location on
         // the map as a marker, and register an event to handle a
         // click on the marker.
@@ -74,8 +97,19 @@ Template.home.events({
 	  Meteor.call("getPlace", text, function(error, results){
 	  	var resjson = JSON.parse(results.content);
 	  	var best = resjson.predictions[0];
-	  	Meteor.call("getPlaceDetails", best.place_id, function(err, details){
-	  		console.log(details);
+	  	Meteor.call("getPlaceDetails", best.place_id, function(err, res){
+	  		var details = JSON.parse(res.content);
+	  		// Locs.insert(details);
+	  		var locs = Session.get("locs");
+	  		locs.push(details);
+	  		Session.set("locs", locs);
+	  		Session.set("center", average(Session.get("locs")));
+	  		Meteor.call("getNearby", Session.get("center"), function(err, res){
+	  			var details = JSON.parse(res.content);
+	  			console.log(details);
+	  			Session.set("featured", details.results);
+	  			console.log(Session.get("featured"));
+	  		});
 	  	});
 	  });
       // Clear form
