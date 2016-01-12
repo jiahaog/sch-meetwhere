@@ -84,7 +84,6 @@ UserWorkflow = React.createClass({
     },
 
     renderResults: function () {
-        console.log(this.state.results.features);
         return this.state.results.features.map(results => {
             return (
                 <div>
@@ -98,7 +97,7 @@ UserWorkflow = React.createClass({
             return (
                 <div>
                     <h3>Results</h3>
-                    {this.state.results.center}
+                    {this.state.results.center[0]},{this.state.results.center[1]}
                     {this.renderResults()}
                 </div>
             );
