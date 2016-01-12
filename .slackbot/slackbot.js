@@ -40,7 +40,7 @@ var NLP = function(message) {
 }
 
 var getResults = function(locations) {
-    request({url:'http://10.12.20.38:3000/hello',qs:locations}, function (error, response, body) {
+    request({url:'http://127.0.0.1:3000/api/meetwhere',qs:locations}, function (error, response, body) {
       if (!error && response.statusCode == 200) {
         console.log(response.body); // Show the HTML for the Google homepage. 
       }
