@@ -7,11 +7,6 @@ Meteor.startup(function () {
 });
 
 Template.userWorkflow.onRendered(function () {
-    this.autorun(function () {
-        if (GoogleMaps.loaded()) {
-            //$(".js-address-input").geocomplete();
-        }
-    });
     ReactDOM.render(<UserWorkflow />, document.getElementById("render-target"));
 });
 
@@ -23,12 +18,16 @@ UserWorkflow = React.createClass({
                 {
                     id: this.getRandomId(),
                     address: null
+                },
+                {
+                    id: this.getRandomId(),
+                    address: null
                 }
             ]
         };
     },
 
-    renderTasks() {
+    renderInputs() {
         return this.state.addressBoxes.map((addressBox) => {
             const key = addressBox.id;
             $(`#${key}`).geocomplete().bind("geocode:result", (event, result) => {
@@ -61,10 +60,16 @@ UserWorkflow = React.createClass({
         }).filter(address => {
             return address;
         });
-        console.log(allAddresses);
-        // todo put code here to do computation
 
-
+        Meteor.call('getCenterAndFeatures', allAddresses, (error, results) => {
+            if (error) {
+                console.error(error);
+                return;
+            }
+            this.setState({
+                results: results
+            });
+        });
     },
 
     addAddressBox: function () {
@@ -78,14 +83,39 @@ UserWorkflow = React.createClass({
         });
     },
 
+    renderResults: function () {
+        console.log(this.state.results.features);
+        return this.state.results.features.map(results => {
+            return (
+                <div>
+                    {results.name}
+                </div>
+            );
+        });
+    },
+    maybeRenderResults: function () {
+        if (this.state.results) {
+            return (
+                <div>
+                    <h3>Results</h3>
+                    {this.state.results.center}
+                    {this.renderResults()}
+                </div>
+            );
+        } else {
+            return '';
+        }
+    },
+
     render: function () {
 
         return (
             <div className="container">
 
-                {this.renderTasks()}
+                {this.renderInputs()}
                 <a className="waves-effect waves-light btn" onClick={this.addAddressBox}>Add Person</a>
                 <a className="waves-effect waves-light btn" onClick={this.submit}>Meet Where!</a>
+                {this.maybeRenderResults()}
             </div>
         );
     },
