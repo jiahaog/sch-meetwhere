@@ -200,8 +200,12 @@ Template.home.onRendered(function () {
                     <div className="hoverable card">
                         <div className="card-content">
                             {this.renderInputs()}
-                            <div className="center-content">
-                                <i className="add-button material-icons" onClick={this.addAddressBox}>add</i>
+
+                            <div className="add-button content-right">
+                            <a>
+                                <i className="material-icons" onClick={this.addAddressBox}>add</i>
+                            </a>
+                            
                             </div>
                         
                         </div>
