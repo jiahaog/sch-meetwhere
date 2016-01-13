@@ -56,7 +56,6 @@ Template.home.onCreated(function() {
 
             // delete all markers
             mapMarkers.forEach(marker => {
-                console.log('DELETING');
                 marker.setMap(null);
             });
             mapMarkers = [];
@@ -66,6 +65,10 @@ Template.home.onCreated(function() {
                     position: new google.maps.LatLng(latLngArray[0], latLngArray[1]),
                     map: map.instance
                 });
+                mapMarkers.push(newMarker);
+
+                map.instance.setCenter(newMarker.getPosition());
+                map.instance.setZoom(15);
             });
         });
     });
@@ -127,18 +130,27 @@ Template.home.onRendered(function () {
                     console.error(error);
                     return;
                 }
-                const locations = results.features.map(place => {
-                    return [place.geometry.location.lat, place.geometry.location.lng];
-                });
+
+                // only take top 5
+                const features = results.features.slice(0, 5);
+                const locations = features
+                    .map(place => {
+                        return [place.geometry.location.lat, place.geometry.location.lng];
+                    });
                 Session.set('markers', locations);
 
-                if (locations.length > 0) {
-                    Session.set('shouldShowMap', true);
+                this.setState({
+                    results: {
+                        center: results.center,
+                        features: features
+                    }
+                });
+                if (locations.length <= 0) {
+                    return;    
                 }
 
-                this.setState({
-                    results: results
-                });
+                Session.set('shouldShowMap', true);
+                
             });
         },
 
@@ -151,12 +163,14 @@ Template.home.onRendered(function () {
             this.setState({
                 addressBoxes: currentState
             });
-
-            //Session.set('markers', [2,103.86434489999999]);
-
         },
 
         renderResults: function () {
+            if (this.state.results.features.length === 0) {
+                return <div>
+                    No places found
+                </div>
+            }
             return this.state.results.features.map((results, index) => {
                 return (
                     <div key={`key-result-feature-${index}`}>
