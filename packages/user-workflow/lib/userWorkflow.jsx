@@ -78,6 +78,13 @@ UserWorkflow = React.createClass({
         this.setState({
             addressBoxes: currentState
         });
+        GoogleMaps.ready('exampleMap', function(map) {
+            // Add a marker to the map once it's ready
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(1.3352205499999998,103.86434489999999),
+                map: map.instance
+            });
+        });
     },
 
     renderResults: function () {

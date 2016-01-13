@@ -1,3 +1,5 @@
+API_KEY = 'AIzaSyB5T8Fuz3xppG_roO3hL2V104LSi2sYuT8';
+
 Meteor.methods({
     /**
      * Performs search for text
@@ -5,7 +7,7 @@ Meteor.methods({
      */
     apiGetPlace: function (text) {
         this.unblock();
-        var url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=" + text + "&key=AIzaSyB0wJuC2ZTaul7QfU3UC9BtG7uAK3MoWzc&components=country:sg";
+        var url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=" + text + `&key=${API_KEY}&components=country:sg`;
         const res = Meteor.http.call("GET", url);
         return JSON.parse(res.content);
     },
@@ -16,7 +18,7 @@ Meteor.methods({
      */
     apiGetPlaceDetails: function (id) {
         this.unblock();
-        var url = "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyB0wJuC2ZTaul7QfU3UC9BtG7uAK3MoWzc&placeid=" + id;
+        var url = `https://maps.googleapis.com/maps/api/place/details/json?key=${API_KEY}&placeid=` + id;
         const res = Meteor.http.call("GET", url);
         return JSON.parse(res.content);
     },
@@ -27,7 +29,7 @@ Meteor.methods({
      */
     apiGetNearby: function (latlng) {
         this.unblock();
-        var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyB0wJuC2ZTaul7QfU3UC9BtG7uAK3MoWzc&location=" + latlng[0] + "," + latlng[1] + "&radius=500&types=food|cafe";
+        var url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${API_KEY}&location=` + latlng[0] + "," + latlng[1] + "&radius=500&types=food|cafe";
         const res = Meteor.http.call("GET", url);
         return JSON.parse(res.content);
     },
