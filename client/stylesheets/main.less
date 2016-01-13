@@ -74,3 +74,33 @@ body {
   height: 100%;
 }
 
+
+// animations
+
+.animate {
+  opacity: 0.01;
+}
+
+.animate-appear.animate-appear-active {
+  opacity: 1;
+  transition: opacity .5s ease-in;
+}
+
+
+.animate-enter {
+  opacity: 0.01;
+}
+
+.animate-enter.animate-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.animate-leave {
+  opacity: 1;
+}
+
+.animate-leave.animate-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}

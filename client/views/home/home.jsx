@@ -9,6 +9,8 @@ Template.home.onRendered(function () {
 });
 
 
+ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+
 Template.home.events({
         'click js-add-marker': function (event) {
             GoogleMaps.ready('exampleMap', function (map) {
@@ -100,11 +102,11 @@ Template.home.onRendered(function () {
                 $(`#${key}`).geocomplete().bind("geocode:result", (event, result) => {
                     this.findIdAndUpdate(key, result.formatted_address);
                 });
-                return <form className key={key}>
-                    <i className="material-icons prefix">account_circle</i>
-                    <input className="js-address-input" id={key} type="text" name="address"
-                           onChange={this.handleInputChange} placeholder="Enter a location"/>
-                </form>
+                return <form key={key}>
+                            <i className="material-icons prefix">account_circle</i>
+                            <input className="js-address-input" id={key} type="text" name="address"
+                                   onChange={this.handleInputChange} placeholder="Enter a location"/>
+                        </form>
             });
         },
 
@@ -208,7 +210,10 @@ Template.home.onRendered(function () {
             if (this.state.results) {
                 return (
                     <div className="row">
-                        {this.renderResults()}
+                        <ReactCSSTransitionGroup transitionName="animate" transitionAppear={true} transitionAppearTimeout={500} transitionEnterTimeout={500}
+                                                 transitionLeaveTimeout={300}>
+                            {this.renderResults()}
+                        </ReactCSSTransitionGroup>
                     </div>
                 )
             } else {
@@ -222,8 +227,10 @@ Template.home.onRendered(function () {
                 <div>
                     <div className="hoverable card">
                         <div className="card-content">
+                            <ReactCSSTransitionGroup transitionName="animate" transitionEnterTimeout={500}
+                                                     transitionLeaveTimeout={300}>
                             {this.renderInputs()}
-
+                                </ReactCSSTransitionGroup>
                             <div className="cursor-pointer content-right">
                                 <a>
                                     <i className="material-icons" onClick={this.addAddressBox}>add</i>
