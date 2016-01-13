@@ -10,19 +10,19 @@ Template.home.onRendered(function () {
 
 
 Template.home.events({
-    'click js-add-marker': function (event) {
-        GoogleMaps.ready('exampleMap', function(map) {
-            // Add a marker to the map once it's ready
-            var marker = new google.maps.Marker({
-                position: map.options.center,
-                map: map.instance
+        'click js-add-marker': function (event) {
+            GoogleMaps.ready('exampleMap', function (map) {
+                // Add a marker to the map once it's ready
+                var marker = new google.maps.Marker({
+                    position: map.options.center,
+                    map: map.instance
+                });
             });
-        });
+        }
     }
-}
 );
 
-Meteor.startup(function() {
+Meteor.startup(function () {
     //GoogleMaps.load();
     GoogleMaps.load({
         key: 'AIzaSyB0wJuC2ZTaul7QfU3UC9BtG7uAK3MoWzc',
@@ -32,24 +32,24 @@ Meteor.startup(function() {
 });
 
 Template.home.helpers({
-    exampleMapOptions: function() {
+    exampleMapOptions: function () {
         // Make sure the maps API has loaded
         if (GoogleMaps.loaded()) {
             // Map initialization options
             return {
-                center: new google.maps.LatLng(1.3577522,103.8206165),
+                center: new google.maps.LatLng(1.3577522, 103.8206165),
                 zoom: 11
             };
         }
     }
 });
 
-Template.home.onCreated(function() {
+Template.home.onCreated(function () {
     // We can use the `ready` callback to interact with the map API once the map is ready.
     GoogleMaps.ready('exampleMap', (map)=> {
 
         let mapMarkers = [];
-        this.autorun(function() {
+        this.autorun(function () {
             var markers = Session.get('markers');
             if (!markers || markers.length === 0)
                 return;
@@ -132,7 +132,7 @@ Template.home.onRendered(function () {
                 }
 
                 // only take top 5
-                const features = results.features.slice(0, 5);
+                const features = results.features.slice(0, 6);
                 const locations = features
                     .map(place => {
                         return [place.geometry.location.lat, place.geometry.location.lng];
@@ -146,11 +146,11 @@ Template.home.onRendered(function () {
                     }
                 });
                 if (locations.length <= 0) {
-                    return;    
+                    return;
                 }
 
                 Session.set('shouldShowMap', true);
-                
+
             });
         },
 
@@ -167,14 +167,39 @@ Template.home.onRendered(function () {
 
         renderResults: function () {
             if (this.state.results.features.length === 0) {
-                return <div>
-                    No places found
+                return <div className="hoverable card">
+                    <div className="card-content">
+                        No places found
+                    </div>
                 </div>
             }
             return this.state.results.features.map((results, index) => {
+
+                function getCardImage() {
+                    if (!results.photos) {
+                        return <div className="card-content">
+                            <span className="card-title">
+                                {results.name}
+                            </span>
+                        </div>;
+                    }
+
+                    const photoReference = results.photos[0].photo_reference;
+                    const imgLink = `https://maps.googleapis.com/maps/api/place/photo?maxheight=200&photoreference=${photoReference}&key=AIzaSyB5T8Fuz3xppG_roO3hL2V104LSi2sYuT8`
+
+                    return <div className="card-image">
+                        <img src={imgLink}/>
+                        <span className="card-title">{results.name}</span>
+                    </div>
+                }
+
                 return (
-                    <div key={`key-result-feature-${index}`}>
-                        {results.name}
+
+
+                    <div className="col s4" key={`key-result-feature-${index}`}>
+                        <div className="card blue-grey darken-1">
+                            {getCardImage()}
+                        </div>
                     </div>
                 );
             });
@@ -182,12 +207,10 @@ Template.home.onRendered(function () {
         maybeRenderResults: function () {
             if (this.state.results) {
                 return (
-                    <div className="hoverable card">
-                        <div className="card-content">
-                            {this.renderResults()}
-                        </div>
+                    <div className="row">
+                        {this.renderResults()}
                     </div>
-                );
+                )
             } else {
                 return '';
             }
@@ -201,17 +224,17 @@ Template.home.onRendered(function () {
                         <div className="card-content">
                             {this.renderInputs()}
 
-                            <div className="add-button content-right">
-                            <a>
-                                <i className="material-icons" onClick={this.addAddressBox}>add</i>
-                            </a>
-                            
+                            <div className="cursor-pointer content-right">
+                                <a>
+                                    <i className="material-icons" onClick={this.addAddressBox}>add</i>
+                                </a>
+
                             </div>
-                        
+
                         </div>
                         <div className="card-action">
-                            
-                            <a onClick={this.submit}>Meet Where</a>
+
+                            <a className="cursor-pointer" onClick={this.submit}>Meet Where</a>
                         </div>
                     </div>
 
