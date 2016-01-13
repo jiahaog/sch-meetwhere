@@ -196,7 +196,7 @@ Template.home.onRendered(function () {
                 return (
 
 
-                    <div className="col s4" key={`key-result-feature-${index}`}>
+                    <div className="col s12 m4" key={`key-result-feature-${index}`}>
                         <div className="card blue-grey darken-1">
                             {getCardImage()}
                         </div>
