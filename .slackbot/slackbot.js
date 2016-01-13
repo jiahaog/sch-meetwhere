@@ -39,11 +39,25 @@ var NLP = function(message) {
     });
 }
 
-var getResults = function(locations) {
+var getResults = function(locations, callback) {
+    var results = "";
     request({url:'http://127.0.0.1:3000/api/meetwhere',qs:locations}, function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        console.log(response.body); // Show the HTML for the Google homepage. 
-      }
+        try {
+            if (!error && response.statusCode == 200) {
+                var response = JSON.parse(response.body).features;
+                for(var i=0; i<response.length; i++) {
+                    results = results + response[i].name + ' @ ' + response[i].vicinity + "\n";
+                    console.log('hello');
+                }
+
+                callback(null, results);
+            } else {
+                throw '!error and response.statusCode === 200';
+            }
+        } catch (error) {
+            callback(error);
+        }
+      
     });
 }
 
@@ -85,12 +99,20 @@ slack.on('message', function(message) {
         if (state === 1) {
             if (trimmedMessage === "done") {
                 channel.send('Ok! Finding nice places now, please gimme a sec!')
-                var results = getResults(locations);
-                locations = [];
-                channel.send('results');
-                state = 0;
-            }
-            else {
+                getResults(locations, function (error, result) {
+                    if (error) {
+                        throw error;
+                    }
+
+                    channel.send(result);
+                    locations = [];
+                    state = 0;
+                });
+                
+                //console.log(loc_results);
+                //channel.send(loc_results);
+                
+            } else {
                 locations.push(trimmedMessage)
                 channel.send('Got it. Adding ' + trimmedMessage +' to list.')
                 console.log(locations);
