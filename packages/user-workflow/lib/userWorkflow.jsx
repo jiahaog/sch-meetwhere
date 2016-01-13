@@ -33,13 +33,10 @@ UserWorkflow = React.createClass({
             $(`#${key}`).geocomplete().bind("geocode:result", (event, result) => {
                 this.findIdAndUpdate(key, result.formatted_address);
             });
-            return <form className="input-field" key={key}>
-                <div>
-                    <i className="material-icons prefix">account_circle</i>
-                    <input className="js-address-input" id={key} type="text" name="address"
-                           onChange={this.handleInputChange}/>
-                    <label className="active" htmlFor={key}>Enter a place</label>
-                </div>
+            return <form className key={key}>
+                <i className="material-icons prefix">account_circle</i>
+                <input className="js-address-input" id={key} type="text" name="address"
+                       onChange={this.handleInputChange} placeholder="Enter a location"/>
             </form>
         });
     },
@@ -81,6 +78,13 @@ UserWorkflow = React.createClass({
         this.setState({
             addressBoxes: currentState
         });
+        GoogleMaps.ready('exampleMap', function(map) {
+            // Add a marker to the map once it's ready
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(1.3352205499999998,103.86434489999999),
+                map: map.instance
+            });
+        });
     },
 
     renderResults: function () {
@@ -95,10 +99,11 @@ UserWorkflow = React.createClass({
     maybeRenderResults: function () {
         if (this.state.results) {
             return (
-                <div>
-                    <h3>Results</h3>
-                    {this.state.results.center[0]},{this.state.results.center[1]}
-                    {this.renderResults()}
+                <div className="hoverable card">
+                    <div className="card-content">
+                        {this.state.results.center[0]},{this.state.results.center[1]}
+                        {this.renderResults()}
+                    </div>
                 </div>
             );
         } else {
@@ -109,11 +114,18 @@ UserWorkflow = React.createClass({
     render: function () {
 
         return (
-            <div className="container">
+            <div>
+                <div className="hoverable card">
 
-                {this.renderInputs()}
-                <a className="waves-effect waves-light btn" onClick={this.addAddressBox}>Add Person</a>
-                <a className="waves-effect waves-light btn" onClick={this.submit}>Meet Where!</a>
+                    <div className="card-content">
+                        {this.renderInputs()}
+                    </div>
+                    <div className="card-action">
+                        <a className="waves-effect waves-light btn" onClick={this.addAddressBox}>Add Person</a>
+                        <a className="waves-effect waves-light btn" onClick={this.submit}>Meet Where!</a>
+                    </div>
+
+                </div>
                 {this.maybeRenderResults()}
             </div>
         );

@@ -11,8 +11,8 @@ Package.onUse(function (api) {
         'meteor-base',
         'blaze-html-templates',
         'react',
-        'dburles:google-maps',
-        'jeremy:geocomplete'
+        //'jeremy:geocomplete',
+        'dburles:google-maps'
     ];
     api.use(packages);
 

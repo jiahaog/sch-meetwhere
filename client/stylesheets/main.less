@@ -3,8 +3,11 @@ body, html {
   height: 100%;
 }
 
+*:not(i):not(.material-icons) {
+  font-family: 'Open Sans', sans-serif;
+}
+
 body {
-  background-color: beige;
   .container {
     height: 100%;
   }
@@ -16,4 +19,26 @@ body {
   #loc-list {
     width: 20%;
   }
+}
+
+.header-title {
+  font-weight: 200;
+  text-transform: lowercase;
+  font-size: 50px;
+}
+
+.full-height {
+  height: 500px;
+}
+
+.center-content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.add-button {
+  padding-top: 14px;
+  font-size: 39px;
+  color: rgba(0, 0, 0, 0.54);
 }

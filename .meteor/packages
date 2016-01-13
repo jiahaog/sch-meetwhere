@@ -26,8 +26,10 @@ iron:router
 materialize:materialize@=0.97.0
 jeremy:geocomplete
 meteorhacks:picker
+react
 
 # meetwhere custom packages
 meetwhere:click-button
 meetwhere:user-workflow
 
+dburles:google-maps
