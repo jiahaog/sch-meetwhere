@@ -187,8 +187,8 @@ Template.home.onRendered(function () {
                     const photoReference = results.photos[0].photo_reference;
                     const imgLink = `https://maps.googleapis.com/maps/api/place/photo?maxheight=200&photoreference=${photoReference}&key=AIzaSyB5T8Fuz3xppG_roO3hL2V104LSi2sYuT8`
 
-                    return <div className="card-image">
-                        <img src={imgLink}/>
+                    return <div className="full-size card-image">
+                        <img className="full-size" src={imgLink}/>
                         <span className="card-title">{results.name}</span>
                     </div>
                 }
@@ -197,7 +197,7 @@ Template.home.onRendered(function () {
 
 
                     <div className="col s12 m4" key={`key-result-feature-${index}`}>
-                        <div className="card blue-grey darken-1">
+                        <div className="result-card card blue-grey darken-1">
                             {getCardImage()}
                         </div>
                     </div>
