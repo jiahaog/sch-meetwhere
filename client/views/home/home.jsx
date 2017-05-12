@@ -27,7 +27,7 @@ Template.home.events({
 Meteor.startup(function () {
     //GoogleMaps.load();
     GoogleMaps.load({
-        key: 'AIzaSyB0wJuC2ZTaul7QfU3UC9BtG7uAK3MoWzc',
+        key: 'AIzaSyDZjhr-V8hazE3bPuRKexIcW4x8mrbUiFY',
         libraries: 'places'  // also accepts an array if you need more than one
     });
 
